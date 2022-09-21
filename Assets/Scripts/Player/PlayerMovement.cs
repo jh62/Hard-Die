@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public float speed = 0f;
 
+    private float accel = 4.25f;
+
     [SerializeField]
     private Animator animator;
 
@@ -36,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
         if (z != 0f || x != 0f)
         {
             bool sprinting = Input.GetKey(KeyCode.LeftShift);
-            float sprint = sprinting ? 8f : 4f;
+            float sprint = sprinting ? accel : accel * .75f;
             speed = Mathf.Clamp(speed + sprint * Time.deltaTime, 0f, 1f);
 
             if (!sprinting && speed > .5f)
@@ -44,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            speed *= .907f;
+            speed *= .217f;
         }
 
 
@@ -54,8 +56,11 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Epsiloneado");
         }
 
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * speed * Time.deltaTime);
+        if (speed >= .47f)
+        {
+            Vector3 move = transform.right * x + transform.forward * z;
+            controller.Move(move * accel * speed * Time.deltaTime);
+        }
 
         animator.SetFloat("x", speed * x);
         animator.SetFloat("y", speed * z);
