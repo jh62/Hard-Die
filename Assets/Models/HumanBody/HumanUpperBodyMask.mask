@@ -11,7 +11,7 @@ AvatarMask:
   m_Elements:
   - m_Path: 
     m_Weight: 1
-  - m_Path: Characters_04
+  - m_Path: Characters
     m_Weight: 1
   - m_Path: mixamorig:Hips
     m_Weight: 1
