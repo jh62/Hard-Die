@@ -49,4 +49,9 @@ public class WeaponInventory : MonoBehaviour
 
         switchTo(activeIndex);
     }
+
+    public BaseWeapon GetWeapon()
+    {
+        return transform.GetChild(activeIndex).GetComponent<BaseWeapon>();
+    }
 }

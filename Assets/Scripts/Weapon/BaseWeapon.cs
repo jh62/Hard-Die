@@ -8,14 +8,14 @@ public class BaseWeapon : MonoBehaviour
     public float magazines = 0f;
     public float fireRate = .5f;
 
+    private bool busy = false;
+
     [SerializeField]
     private ParticleSystem muzzleFlash;
 
     public void Shoot()
     {
-        if (muzzleFlash != null)
-        {
-            muzzleFlash.Emit(1);
-        }
+
+        muzzleFlash.Emit(1);
     }
 }
