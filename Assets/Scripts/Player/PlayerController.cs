@@ -10,7 +10,8 @@ public class PlayerController : BaseCharacter
     [SerializeField]
     private float acceleration = 4.25f;
 
-    public float speed = 0f;
+    private float speed = 0f;
+    private bool firing = false;
 
     private Vector3 direction = new Vector3();
 
@@ -67,28 +68,34 @@ public class PlayerController : BaseCharacter
             speed = 0f;
         }
 
-        if (speed >= .475f)
+        if (speed >= .2f)
         {
             direction = new Vector3(_x, 0f, _z);
             var desiredVelocity = transform.right * direction.x + transform.forward * direction.z;
             controller.Move(desiredVelocity * speed * acceleration * Time.deltaTime);
         }
 
-        bool firing = Input.GetButton("Fire1");
+        firing = Input.GetButton("Fire1");
 
         if (firing && !animator.GetBool("shooting"))
         {
             StartCoroutine("ShootLogic");
-            inventory.GetWeapon().Shoot();
+            // inventory.GetWeapon().Shoot();
         }
     }
 
     IEnumerator ShootLogic()
     {
         animator.SetBool("shooting", true);
+
+        while (firing)
+        {
+            inventory.GetWeapon().Shoot();
+            yield return new WaitForSeconds(.4f);
+        }
+
         yield return new WaitForSeconds(.08f);
-        inventory.GetWeapon().Shoot();
-        yield return new WaitForSeconds(.35f);
         animator.SetBool("shooting", false);
+        yield break;
     }
 }

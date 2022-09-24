@@ -285,6 +285,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7710537044740419051}
     m_Modifications:
+    - target: {fileID: -9171439773237890907, guid: 6c03b4cd685768443906f73af8c1d5b6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c03b4cd685768443906f73af8c1d5b6, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -354,9 +358,13 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1710298667505336795, guid: 6c03b4cd685768443906f73af8c1d5b6, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 3980933397289453108, guid: 6c03b4cd685768443906f73af8c1d5b6, type: 3}
+    - target: {fileID: 1710298667505336795, guid: 6c03b4cd685768443906f73af8c1d5b6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d9597808537b29d4e85085ff2e3319e9, type: 2}
+      objectReference: {fileID: 2100000, guid: 14c373a8c991d264ba8f01a7840d0516, type: 2}
     - target: {fileID: 5866666021909216657, guid: 6c03b4cd685768443906f73af8c1d5b6, type: 3}
       propertyPath: m_Avatar
       value: 
