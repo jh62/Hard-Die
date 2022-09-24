@@ -25,6 +25,13 @@ public abstract class BaseCharacter : MonoBehaviour
 
     protected CharacterState state = CharacterState.IDLE;
 
+    private Rigidbody[] rigidBodies;
+
+    private void Awake()
+    {
+        rigidBodies = GetComponentsInChildren<Rigidbody>();
+    }
+
     public void setShooting(bool _shooting)
     {
         animator.SetBool("shooting", _shooting);

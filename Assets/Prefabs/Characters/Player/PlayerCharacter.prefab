@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 549887977447230348, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 730597565182629138, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -907,6 +907,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.052332714
       objectReference: {fileID: 0}
+    - target: {fileID: 6027424062327785912, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 6863717206196401653}
     - target: {fileID: 6128013892409299134, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 15.537064
@@ -1099,6 +1103,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7935987728890759913, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935987728890759913, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8212009335877384411, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000000011466909
@@ -1264,11 +1276,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0efd8a2bcd8c9884c9c996d01916c8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 7492659664011025179}
+  animator: {fileID: 0}
   inventory: {fileID: 5426241372244936637}
   controller: {fileID: 6863717206196401653}
   acceleration: 2
-  speed: 0
 --- !u!114 &5426241372244936637 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8280785834226181194, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
@@ -1280,8 +1291,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e01e311661714947bdbf615588803d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &7492659664011025179 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6799843164230596844, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
-  m_PrefabInstance: {fileID: 4154186999371359223}
-  m_PrefabAsset: {fileID: 0}

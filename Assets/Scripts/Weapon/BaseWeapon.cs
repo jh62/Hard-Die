@@ -13,7 +13,6 @@ public class BaseWeapon : MonoBehaviour
     [SerializeField] private AudioClip[] fireSounds = default;
 
     private Task taskNextSound;
-    private bool busy = false;
 
     [SerializeField]
     private ParticleSystem muzzleFlash;
