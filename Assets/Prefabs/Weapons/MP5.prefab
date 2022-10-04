@@ -132,7 +132,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -232,6 +232,8 @@ MonoBehaviour:
   bullets: 0
   magazines: 0
   fireRate: 0.5
+  id: 0
+  audioSource: {fileID: 0}
   fireSounds: []
   muzzleFlash: {fileID: 7832928860999835932}
 --- !u!1 &8520690382566045597

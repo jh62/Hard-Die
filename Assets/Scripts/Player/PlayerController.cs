@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,34 +9,72 @@ public class PlayerController : BaseCharacter
     private CharacterController controller;
 
     [SerializeField]
+    private Transform groundCheck;
+
+    [SerializeField]
+    private Target targetCheck;
+
+    [SerializeField]
     private float acceleration = 4.25f;
 
     private float speed = 0f;
-    private bool firing = false;
+    private bool shooting = false;
+    private bool reloading = false;
 
-    private Vector3 direction = new Vector3();
+    public Vector3 direction = new Vector3();
+
+    [SerializeField] private bool drawGizmos = false;
+
+    private void OnDrawGizmos()
+    {
+        if (!drawGizmos)
+            return;
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(raycastOrigin.position, raycastOrigin.position + raycastOrigin.forward * 50f);
+        Gizmos.DrawSphere(groundCheck.position, 0.1f);
+    }
 
     void Update()
     {
+        if (!isAlive())
+            return;
+
         PlayerInput();
 
-        switch (state)
+        // Physics.CheckCapsule(groundCheck.position,)
+        bool isGrounded = Physics.CheckSphere(groundCheck.position, 0.07f, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
+
+        if (!isGrounded)
+        {
+            direction.y -= 9f * Time.deltaTime;
+        }
+        else
+        {
+            if (direction.y < 0f)
+                direction.y = -2f;
+        }
+
+        controller.Move(transform.up * direction.y);
+
+        switch (State)
         {
             case CharacterState.IDLE:
                 {
                     if (speed != 0f)
                     {
-                        setState(CharacterState.MOVE);
+                        State = CharacterState.MOVE;
+                        break;
                     }
                     break;
                 }
             case CharacterState.MOVE:
                 {
-                    if (speed == 0f)
+                    if (speed <= 0f)
                     {
-                        setState(CharacterState.IDLE);
+                        State = CharacterState.IDLE;
+                        break;
                     }
-
                     animator.SetFloat("x", speed * direction.x, .1f, Time.deltaTime);
                     animator.SetFloat("y", speed * direction.z, .1f, Time.deltaTime);
                     break;
@@ -43,8 +82,27 @@ public class PlayerController : BaseCharacter
         }
     }
 
+    public override void OnStateChanged()
+    {
+        base.OnStateChanged();
+
+        switch (State)
+        {
+            case CharacterState.DEAD:
+                {
+                    StopAllCoroutines();
+                    controller.enabled = false;
+                    animator.enabled = false;
+                    break;
+                }
+        }
+    }
+
     private void PlayerInput()
     {
+        if (reloading)
+            return;
+
         float _x = Input.GetAxis("Horizontal");
         float _z = Input.GetAxis("Vertical");
         bool sprinting = Input.GetKey(KeyCode.LeftShift);
@@ -55,7 +113,7 @@ public class PlayerController : BaseCharacter
             speed = Mathf.Clamp(speed + sprint * Time.deltaTime, 0f, 1f);
 
             if (!sprinting && speed > .5f)
-                speed -= .025f;
+                speed = .5f;
         }
         else
         {
@@ -70,32 +128,65 @@ public class PlayerController : BaseCharacter
 
         if (speed >= .2f)
         {
-            direction = new Vector3(_x, 0f, _z);
+            direction.Set(_x, direction.y, _z);
+            // direction = new Vector3(_x, direction.y, _z);
             var desiredVelocity = transform.right * direction.x + transform.forward * direction.z;
             controller.Move(desiredVelocity * speed * acceleration * Time.deltaTime);
         }
 
-        firing = Input.GetButton("Fire1");
+        shooting = Input.GetButton("Fire1");
 
-        if (firing && !animator.GetBool("shooting"))
+        if (shooting && !animator.GetBool("Shooting"))
         {
             StartCoroutine("ShootLogic");
-            // inventory.GetWeapon().Shoot();
         }
+
+        if (!reloading && Input.GetKeyDown(KeyCode.R))
+        {
+            if (shooting)
+            {
+                shooting = false;
+                animator.SetBool("Shooting", false);
+                StopCoroutine("Shooting");
+            }
+
+            reloading = true;
+
+            var weapon = inventory.GetWeapon();
+            animator.SetInteger("WeaponID", (int)weapon.Id);
+            animator.SetTrigger("Reloading");
+            weapon.reload();
+            StartCoroutine("ReloadLogic");
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            inventory.next();
+        }
+    }
+
+    IEnumerator ReloadLogic()
+    {
+        yield return new WaitForSeconds(3f);
+        reloading = false;
     }
 
     IEnumerator ShootLogic()
     {
-        animator.SetBool("shooting", true);
+        var weapon = inventory.GetWeapon();
 
-        while (firing)
+        animator.SetBool("Shooting", true);
+        animator.SetInteger("WeaponID", (int)weapon.Id);
+
+        while (shooting)
         {
-            inventory.GetWeapon().Shoot();
-            yield return new WaitForSeconds(.4f);
+            var targets = targetCheck.getTargets();
+            weapon.Shoot(targets);
+            // weapon.Shoot(raycastOrigin.position, raycastOrigin.forward);
+            yield return new WaitForSeconds(weapon.FireRate);
         }
 
-        yield return new WaitForSeconds(.08f);
-        animator.SetBool("shooting", false);
+        animator.SetBool("Shooting", false);
         yield break;
     }
 }

@@ -29,7 +29,7 @@ public abstract class BaseCharacter : MonoBehaviour
     // public IAnimationEvent AnimationEvents;
 
     [Range(1, 20)]
-    public int MaxHealth = 10;
+    public int MaxHealth = 1;
 
     [SerializeField]
     protected Animator animator;
@@ -80,8 +80,8 @@ public abstract class BaseCharacter : MonoBehaviour
             return;
         }
 
-        animator.SetFloat("normalX", normal.x);
-        animator.SetFloat("normalY", normal.z);
+        // animator.SetFloat("normalX", normal.x);
+        // animator.SetFloat("normalY", normal.z);
         animator.SetTrigger("Hit");
     }
 
