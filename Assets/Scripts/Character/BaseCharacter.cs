@@ -1,21 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 public abstract class BaseCharacter : MonoBehaviour
 {
+    public Action<BaseCharacter> OnDead;
+
     public enum CharacterState
     {
         IDLE,
         MOVE,
-        DYING,
         DEAD
     }
 
 
     public Animator Animator { get => animator; }
-    public CharacterState State { get => state; set => state = value; }
+    public CharacterState State
+    {
+        get => state;
+        set
+        {
+            if (state != value)
+            {
+                state = value;
+                OnStateChanged();
+            }
+        }
+    }
+    // public IAnimationEvent AnimationEvents;
+
+    [Range(1, 20)]
+    public int MaxHealth = 10;
 
     [SerializeField]
     protected Animator animator;
@@ -23,37 +37,79 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     protected WeaponInventory inventory;
 
-    protected CharacterState state = CharacterState.IDLE;
+    [SerializeField]
+    protected Transform raycastOrigin;
 
+    protected int health;
+
+    private CharacterState state = CharacterState.IDLE;
     private Rigidbody[] rigidBodies;
+
+    private float velocityY = 0f;
 
     private void Awake()
     {
         rigidBodies = GetComponentsInChildren<Rigidbody>();
+        // inventory.OnWeaponSwitched += OnWeaponSwitched;
+
+        // if (AnimationEvents != null)
+        // {
+        //     AnimationEvents.OnAnimationEventKey += OnAnimationEventKey;
+        //     AnimationEvents.OnAnimationEvent += OnAnimationEvent;
+        // }
     }
 
-    public void setShooting(bool _shooting)
+    private void Start()
     {
-        animator.SetBool("shooting", _shooting);
+        health = MaxHealth;
     }
 
-    public void setState(CharacterState newState)
+    public bool isAlive()
     {
-        if (newState == state)
-            return;
+        return State != CharacterState.DEAD;
+    }
 
-        state = newState;
+    public virtual void Hit(float dammage, Vector3 normal)
+    {
+        health--;
 
-        switch (state)
+        if (health <= 0)
         {
-            case CharacterState.IDLE:
+            State = CharacterState.DEAD;
+            GetComponent<Health>().ActivateRagdolls(true, normal);
+            return;
+        }
+
+        animator.SetFloat("normalX", normal.x);
+        animator.SetFloat("normalY", normal.z);
+        animator.SetTrigger("Hit");
+    }
+
+    public virtual void OnStateChanged()
+    {
+        switch (State)
+        {
+            case CharacterState.DEAD:
                 {
-                    break;
-                }
-            case CharacterState.MOVE:
-                {
+                    OnDead?.Invoke(this);
+                    animator.enabled = false;
+                    foreach (var component in GetComponents<Collider>())
+                        component.enabled = false;
                     break;
                 }
         }
     }
+
+    public virtual void setShooting(bool _shooting)
+    {
+        animator.SetBool("shooting", _shooting);
+    }
+
+    private void OnWeaponSwitched(int weaponId)
+    {
+        animator.SetInteger("WeaponID", weaponId);
+    }
+
+    // public abstract void OnAnimationEventKey(string _event);
+    // public abstract void OnAnimationEvent(AnimationEvent _event);
 }

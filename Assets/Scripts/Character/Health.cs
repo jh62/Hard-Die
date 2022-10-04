@@ -19,24 +19,18 @@ public class Health : MonoBehaviour
 
     void Awake()
     {
-        ActivateRagdolls(false);
+        ActivateRagdolls(false, Vector3.zero);
     }
 
-    public void ActivateRagdolls(bool activate)
+    public void ActivateRagdolls(bool activate, Vector3 normal)
     {
-        if (controller != null)
-            controller.enabled = !activate;
-
-        if (agent != null)
-            agent.enabled = !activate;
-
-        if (animator != null)
-            animator.enabled = !activate;
-
         foreach (Rigidbody body in rigidBodies)
         {
             body.useGravity = activate;
             body.isKinematic = !activate;
+
+            if (normal.magnitude != 0f)
+                body.AddForce(normal, ForceMode.Impulse);
         }
     }
 }
