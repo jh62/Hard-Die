@@ -5,7 +5,13 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     public string targetTag = default;
+    public RaycastHit Hit
+    {
+        get => hit;
+    }
+
     private List<BaseCharacter> targets = new List<BaseCharacter>();
+    private RaycastHit hit = default;
 
     void Start()
     {
@@ -22,7 +28,6 @@ public class Target : MonoBehaviour
 
     public BaseCharacter CheckTargetHit()
     {
-        RaycastHit hit = default;
         BaseCharacter target = null;
 
         foreach (var t in targets)
@@ -38,6 +43,11 @@ public class Target : MonoBehaviour
                         target = t;
                 }
             }
+        }
+
+        if (targets.Count == 0)
+        {
+            Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore);
         }
 
         return target;

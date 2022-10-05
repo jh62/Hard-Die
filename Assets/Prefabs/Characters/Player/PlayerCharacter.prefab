@@ -359,7 +359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1381059570401334690, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: PlayerCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 1381059570401334690, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_TagString
@@ -1572,7 +1572,7 @@ CharacterController:
   m_Height: 1
   m_Radius: 0.25
   m_SlopeLimit: 10
-  m_StepOffset: 0.1
+  m_StepOffset: 0.18
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.5, z: 0}

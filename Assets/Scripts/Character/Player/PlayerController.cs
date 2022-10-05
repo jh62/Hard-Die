@@ -184,6 +184,17 @@ public class PlayerController : BaseCharacter
 
             if (target != null)
                 target.Hit(1f, transform.forward);
+            else
+            {
+                Collider c = targetCheck.Hit.collider;
+
+                Debug.Log(targetCheck.Hit.collider);
+
+                if (c != null && c.CompareTag("Window"))
+                {
+                    c.GetComponent<BreakableWindow>().breakWindow();
+                }
+            }
 
             weapon.Shoot();
             yield return new WaitForSeconds(weapon.FireRate);
