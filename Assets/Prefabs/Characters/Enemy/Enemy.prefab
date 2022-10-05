@@ -488,7 +488,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 10, y: 1, z: 10}
+  m_Size: {x: 18, y: 2, z: 18}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &621886798
 NavMeshAgent:
@@ -527,10 +527,10 @@ MonoBehaviour:
   MaxHealth: 10
   animator: {fileID: 6146667515283553549}
   inventory: {fileID: 9055752682983543307}
-  raycastOrigin: {fileID: 0}
   target: {fileID: 0}
   agent: {fileID: 621886798}
   headTarget: {fileID: 2881818571037235407}
+  targetLockSpeed: 4.21
 --- !u!95 &6146667515283553549 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6488108489247656780, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}

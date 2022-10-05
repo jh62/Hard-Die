@@ -7,21 +7,13 @@ public class WeaponInventory : MonoBehaviour
 {
     public enum Weapon
     {
-        DEAGLE = 0,
-        AK47 = 1,
-        G36C = 2,
-        MP5 = 3
+        DEAGLE,
+        AK47,
+        G36C,
+        MP5
     }
 
-    private int activeIndex = (int)Weapon.DEAGLE;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            next();
-        }
-    }
+    private int activeIndex = 0;
 
     public void switchTo(int weaponIndex)
     {
@@ -47,6 +39,7 @@ public class WeaponInventory : MonoBehaviour
         if (activeIndex >= Enum.GetNames(typeof(Weapon)).Length)
             activeIndex = 0;
 
+        Debug.Log(activeIndex);
         switchTo(activeIndex);
     }
 

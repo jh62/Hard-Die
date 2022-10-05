@@ -194,15 +194,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e78f6e14f599c458a9bbdd1757d971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullets: 0
-  magazines: 0
-  fireRate: 0.5
+  bullets: 99999
+  magazines: 99999
+  fireRate: 0.27
   id: 0
   audioSource: {fileID: 3573148548772102807}
   fireSounds:
   - {fileID: 8300000, guid: 7b6e0de3bcf581a43ab5df77a6e2ce21, type: 3}
-  - {fileID: 8300000, guid: bb8b6afa18eb07f499d1254f24f2a47c, type: 3}
-  - {fileID: 8300000, guid: 5e159afd8f7b1a64ebbcd3ecb706b213, type: 3}
   muzzleFlash: {fileID: 362958852157040034}
 --- !u!1001 &561041414488389880
 PrefabInstance:

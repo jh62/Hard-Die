@@ -20,28 +20,28 @@ public class Target : MonoBehaviour
         return targets;
     }
 
-    // public RaycastHit getClosest()
-    // {
-    //     RaycastHit hit = default;
-    //     BaseCharacter target = null;
+    public BaseCharacter CheckTargetHit()
+    {
+        RaycastHit hit = default;
+        BaseCharacter target = null;
 
-    //     foreach (var t in targets)
-    //     {
-    //         if (!t.isAlive())
-    //             continue;
+        foreach (var t in targets)
+        {
+            if (!t.isAlive())
+                continue;
 
-    //         if (target == null || Vector2.Distance(transform.position, t.transform.position) < Vector2.Distance(transform.position, target.transform.position))
-    //         {
-    //             if (Physics.Raycast(transform.position, (t.transform.position - transform.position).normalized, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
-    //             {
-    //                 if (hit.collider is ITargetable)
-    //                     target = t;
-    //             }
-    //         }
-    //     }
+            if (target == null || Vector2.Distance(transform.position, t.transform.position) < Vector2.Distance(transform.position, target.transform.position))
+            {
+                if (Physics.Raycast(transform.position, (t.transform.position - transform.position).normalized, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
+                {
+                    if (hit.collider.CompareTag(t.tag))
+                        target = t;
+                }
+            }
+        }
 
-    //     return hit;
-    // }
+        return target;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

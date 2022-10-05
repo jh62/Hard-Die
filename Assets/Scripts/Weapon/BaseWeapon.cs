@@ -43,6 +43,15 @@ public class BaseWeapon : MonoBehaviour
         bullets = 30;
     }
 
+    public void Shoot()
+    {
+        // if (bullets == 0)
+        //     return;
+
+        PlayFireSound();
+        muzzleFlash.Emit(1);
+    }
+
     public void Shoot(List<BaseCharacter> targets)
     {
         RaycastHit hit = default;

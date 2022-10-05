@@ -21,9 +21,10 @@ public class PlayerController : BaseCharacter
     private bool shooting = false;
     private bool reloading = false;
 
-    public Vector3 direction = new Vector3();
+    private Vector3 direction = new Vector3();
 
     [SerializeField] private bool drawGizmos = false;
+
 
     private void OnDrawGizmos()
     {
@@ -31,7 +32,6 @@ public class PlayerController : BaseCharacter
             return;
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(raycastOrigin.position, raycastOrigin.position + raycastOrigin.forward * 50f);
         Gizmos.DrawSphere(groundCheck.position, 0.1f);
     }
 
@@ -180,13 +180,26 @@ public class PlayerController : BaseCharacter
 
         while (shooting)
         {
-            var targets = targetCheck.getTargets();
-            weapon.Shoot(targets);
-            // weapon.Shoot(raycastOrigin.position, raycastOrigin.forward);
+            var target = targetCheck.CheckTargetHit();
+
+            if (target != null)
+                target.Hit(1f, transform.forward);
+
+            weapon.Shoot();
             yield return new WaitForSeconds(weapon.FireRate);
         }
 
         animator.SetBool("Shooting", false);
         yield break;
+    }
+
+    public override float getSpeed()
+    {
+        return speed;
+    }
+
+    public override Vector3 getDirection()
+    {
+        return direction;
     }
 }

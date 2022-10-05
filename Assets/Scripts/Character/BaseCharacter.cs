@@ -37,15 +37,13 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     protected WeaponInventory inventory;
 
-    [SerializeField]
-    protected Transform raycastOrigin;
+    // [SerializeField]
+    // protected Transform raycastOrigin;
 
     protected int health;
 
     private CharacterState state = CharacterState.IDLE;
     private Rigidbody[] rigidBodies;
-
-    private float velocityY = 0f;
 
     private void Awake()
     {
@@ -63,6 +61,9 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         health = MaxHealth;
     }
+
+    public abstract float getSpeed();
+    public abstract Vector3 getDirection();
 
     public bool isAlive()
     {

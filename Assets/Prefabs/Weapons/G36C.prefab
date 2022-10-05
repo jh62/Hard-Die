@@ -144,12 +144,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e78f6e14f599c458a9bbdd1757d971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullets: 0
-  magazines: 0
-  fireRate: 0.5
-  id: 0
-  audioSource: {fileID: 0}
-  fireSounds: []
+  bullets: 30
+  magazines: 15
+  fireRate: 0.18
+  id: 2
+  audioSource: {fileID: 3450144970216015293}
+  fireSounds:
+  - {fileID: 8300000, guid: 9d8584f46bdec7a42b95eb7114ad9dcc, type: 3}
   muzzleFlash: {fileID: 4804615792844881709}
 --- !u!1 &4640967063543105094
 GameObject:
