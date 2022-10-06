@@ -25,6 +25,11 @@ public class PlayerController : BaseCharacter
 
     [SerializeField] private bool drawGizmos = false;
 
+    private void Start()
+    {
+        animator.SetBool("Alerted", true);
+        health = MaxHealth;
+    }
 
     private void OnDrawGizmos()
     {
@@ -90,6 +95,7 @@ public class PlayerController : BaseCharacter
         {
             case CharacterState.DEAD:
                 {
+                    GetComponent<MouseLook>().enabled = false;
                     StopAllCoroutines();
                     controller.enabled = false;
                     animator.enabled = false;
@@ -187,8 +193,6 @@ public class PlayerController : BaseCharacter
             else
             {
                 Collider c = targetCheck.Hit.collider;
-
-                Debug.Log(targetCheck.Hit.collider);
 
                 if (c != null && c.CompareTag("Window"))
                 {

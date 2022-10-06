@@ -10,6 +10,8 @@ public class MouseLook : MonoBehaviour
     [Range(1f, 1000f)]
     public float mouseSensitivity = 1000f;
 
+    public new bool enabled = true;
+
     private Camera mainCamera;
 
     private float rotationX = 0f;
@@ -22,6 +24,9 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
+        if (!enabled)
+            return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
 
         if (mouseX != 0f)

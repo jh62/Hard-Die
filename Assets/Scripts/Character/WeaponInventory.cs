@@ -39,7 +39,6 @@ public class WeaponInventory : MonoBehaviour
         if (activeIndex >= Enum.GetNames(typeof(Weapon)).Length)
             activeIndex = 0;
 
-        Debug.Log(activeIndex);
         switchTo(activeIndex);
     }
 

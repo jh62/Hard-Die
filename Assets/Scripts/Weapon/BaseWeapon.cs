@@ -1,10 +1,12 @@
-using System.Threading.Tasks;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BaseWeapon : MonoBehaviour
 {
+    public static Action<Transform> OnWeaponFired;
+
     public enum WeaponID
     {
         PISTOL = 0,
@@ -24,11 +26,8 @@ public class BaseWeapon : MonoBehaviour
     [SerializeField] private AudioSource audioSource = default;
     [SerializeField] private AudioClip[] fireSounds = default;
 
-    private Task taskNextSound;
-
     [SerializeField]
     private ParticleSystem muzzleFlash;
-
 
     private void Start()
     {
@@ -50,6 +49,7 @@ public class BaseWeapon : MonoBehaviour
 
         PlayFireSound();
         muzzleFlash.Emit(1);
+        OnWeaponFired?.Invoke(transform);
     }
 
     public void Shoot(List<BaseCharacter> targets)

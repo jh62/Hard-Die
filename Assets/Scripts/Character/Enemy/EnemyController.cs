@@ -9,6 +9,9 @@ public class EnemyController : BaseCharacter
     public Perception perception;
 
     [SerializeField]
+    private List<Transform> patrolPoints = default;
+
+    [SerializeField]
     private NavMeshAgent agent;
 
     [SerializeField]
@@ -21,6 +24,7 @@ public class EnemyController : BaseCharacter
     {
         StartCoroutine("UpdateNavAgentLogic");
         perception.OnTargetExitTrigger += OnTargetLost;
+        BaseWeapon.OnWeaponFired += OnWeaponFired;
     }
 
     void Update()
@@ -50,7 +54,7 @@ public class EnemyController : BaseCharacter
                     }
 
                     var direction = agent.desiredVelocity.normalized;
-                    var speed = agent.speed;
+                    var speed = agent.desiredVelocity.magnitude;
 
                     animator.SetFloat("x", speed * direction.x, .1f, Time.deltaTime);
                     animator.SetFloat("y", speed * direction.z, .1f, Time.deltaTime);
@@ -88,6 +92,18 @@ public class EnemyController : BaseCharacter
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, targetLockSpeed * Time.deltaTime);
     }
 
+    private void OnWeaponFired(Transform transform)
+    {
+        if (perception.Target != null)
+            return;
+
+        patrolPoints.Clear();
+        patrolPoints.Add(transform);
+        animator.SetBool("Alerted", true);
+        // agent.destination = transform.position;
+        Debug.Log("Shots fired!");
+    }
+
     private void OnTargetLost(BaseCharacter _target)
     {
         agent.destination = _target.transform.position;
@@ -121,19 +137,43 @@ public class EnemyController : BaseCharacter
 
     IEnumerator UpdateNavAgentLogic()
     {
+        int patrolPointIndex = 0;
+        float waitTime = 0f;
+
         while (isAlive())
         {
             if (perception.Target != null)
             {
+                animator.SetBool("Alerted", true);
                 agent.destination = perception.Target.transform.position;
-                Debug.Log(agent.destination);
+            }
+            else
+            {
+                // animator.SetBool("Alerted", false);
+
+                if (waitTime > 0f)
+                    waitTime -= Time.deltaTime;
+
+                if (patrolPoints.Count > 0)
+                {
+                    if (patrolPointIndex >= patrolPoints.Count)
+                        patrolPointIndex = 0;
+
+                    Transform waypoint = patrolPoints[patrolPointIndex];
+
+                    if (Vector3.Distance(transform.position, waypoint.position) < agent.stoppingDistance)
+                    {
+                        patrolPointIndex++;
+                        waitTime = Random.Range(0f, 10f);
+                    }
+
+                    agent.destination = waypoint.position;
+                }
             }
 
-
             yield return new WaitForSeconds(.15f);
-        }
 
-        Debug.Log((isAlive()), this);
+        }
     }
 
     public override float getSpeed()

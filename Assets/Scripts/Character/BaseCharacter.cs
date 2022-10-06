@@ -29,7 +29,7 @@ public abstract class BaseCharacter : MonoBehaviour
     // public IAnimationEvent AnimationEvents;
 
     [Range(1, 20)]
-    public int MaxHealth = 1;
+    public int MaxHealth = 10;
 
     [SerializeField]
     protected Animator animator;

@@ -17,6 +17,9 @@ public class Perception : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
+        if (!Physics.Raycast(transform.position + transform.up, transform.forward, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
+            return;
+
         target = other.GetComponent<BaseCharacter>();
         OnTargetEnterTrigger?.Invoke(target);
     }

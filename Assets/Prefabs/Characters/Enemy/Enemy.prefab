@@ -76,7 +76,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 1, z: 10}
+  m_Size: {x: 18, y: 1, z: 18}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7759014407435982502
 Rigidbody:
@@ -270,7 +270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1381059571603931234, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1381059571603931236, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
       propertyPath: m_Data.m_MaxLimit
@@ -592,19 +592,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1381059570401334690, guid: db3accd0e418a2a49af69d9bfdd17011, type: 3}
   m_PrefabInstance: {fileID: 1100916538642609729}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1206920833
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2048504095115437027}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 18, y: 2, z: 18}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &621886798
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -615,13 +602,13 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.28
-  m_Speed: 2.4
+  m_Speed: 1
   m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 8
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
   m_BaseOffset: 0
@@ -644,8 +631,9 @@ MonoBehaviour:
   inventory: {fileID: 9055752682983543307}
   rayOrigin: {fileID: 5369733025688540299}
   perception: {fileID: 5201705658436479576}
+  patrolPoints: []
   agent: {fileID: 621886798}
-  headTarget: {fileID: 2881818571037235407}
+  headTarget: {fileID: 0}
   targetLockSpeed: 4.21
 --- !u!95 &6146667515283553549 stripped
 Animator:
