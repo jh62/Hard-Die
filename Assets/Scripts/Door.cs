@@ -28,14 +28,14 @@ public class Door : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.collider.TryGetComponent<BaseCharacter>(out mob))
-        {
-            if (!open)
-                Open(other.transform.position);
-        }
-    }
+    // private void OnCollisionEnter(Collision other)
+    // {
+    //     if (other.collider.TryGetComponent<BaseCharacter>(out mob))
+    //     {
+    //         if (!open)
+    //             Open(other.transform.position);
+    //     }
+    // }
 
     private void OnTriggerEnter(Collider other)
     {

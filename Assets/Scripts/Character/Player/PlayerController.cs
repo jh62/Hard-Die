@@ -180,7 +180,7 @@ public class PlayerController : BaseCharacter
 
         while (shooting)
         {
-            var target = targetCheck.CheckTargetHit();
+            var target = targetCheck.CheckTargetHit(rayOrigin.position);
 
             if (target != null)
                 target.Hit(1f, transform.forward);

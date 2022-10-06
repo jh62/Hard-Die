@@ -45,7 +45,7 @@ GameObject:
   m_Layer: 2
   m_Name: Aim
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -57,7 +57,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8854848328493636487}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.9, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76,7 +76,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 10, z: 20}
-  m_Center: {x: 0, y: 0, z: 10.2}
+  m_Center: {x: 0, y: 0, z: 10}
 --- !u!114 &6378460644719676381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1605,6 +1605,7 @@ MonoBehaviour:
   MaxHealth: 20
   animator: {fileID: 7182334700644395195}
   inventory: {fileID: 5426241372244936637}
+  rayOrigin: {fileID: 5660897829723148701}
   controller: {fileID: 6863717206196401653}
   groundCheck: {fileID: 708114037227268664}
   targetCheck: {fileID: 6378460644719676381}

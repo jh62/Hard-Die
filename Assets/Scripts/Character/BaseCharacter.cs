@@ -37,6 +37,9 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     protected WeaponInventory inventory;
 
+    [SerializeField]
+    protected Transform rayOrigin;
+
     // [SerializeField]
     // protected Transform raycastOrigin;
 

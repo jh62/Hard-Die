@@ -5,6 +5,7 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     public string targetTag = default;
+
     public RaycastHit Hit
     {
         get => hit;
@@ -26,7 +27,7 @@ public class Target : MonoBehaviour
         return targets;
     }
 
-    public BaseCharacter CheckTargetHit()
+    public BaseCharacter CheckTargetHit(Vector3 raycastOrigin)
     {
         BaseCharacter target = null;
 
@@ -37,7 +38,7 @@ public class Target : MonoBehaviour
 
             if (target == null || Vector2.Distance(transform.position, t.transform.position) < Vector2.Distance(transform.position, target.transform.position))
             {
-                if (Physics.Raycast(transform.position, (t.transform.position - transform.position).normalized, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(raycastOrigin, (t.transform.position - transform.position).normalized, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
                 {
                     if (hit.collider.CompareTag(t.tag))
                         target = t;
@@ -45,10 +46,8 @@ public class Target : MonoBehaviour
             }
         }
 
-        if (targets.Count == 0)
-        {
+        if (targets == null)
             Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore);
-        }
 
         return target;
     }

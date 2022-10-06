@@ -6,7 +6,7 @@ using UnityEngine.Animations;
 
 public class EnemyController : BaseCharacter
 {
-    public BaseCharacter target;
+    public Perception perception;
 
     [SerializeField]
     private NavMeshAgent agent;
@@ -20,6 +20,7 @@ public class EnemyController : BaseCharacter
     private void Start()
     {
         StartCoroutine("UpdateNavAgentLogic");
+        perception.OnTargetExitTrigger += OnTargetLost;
     }
 
     void Update()
@@ -30,7 +31,7 @@ public class EnemyController : BaseCharacter
         {
             case CharacterState.IDLE:
                 {
-                    if (target != null || agent.destination != null)
+                    if (perception.Target != null || agent.destination != null)
                     {
                         State = CharacterState.MOVE;
                         return;
@@ -42,7 +43,7 @@ public class EnemyController : BaseCharacter
                 }
             case CharacterState.MOVE:
                 {
-                    if (target == null && agent.destination == null)
+                    if (perception.Target == null && agent.destination == null)
                     {
                         State = CharacterState.IDLE;
                         return;
@@ -54,7 +55,7 @@ public class EnemyController : BaseCharacter
                     animator.SetFloat("x", speed * direction.x, .1f, Time.deltaTime);
                     animator.SetFloat("y", speed * direction.z, .1f, Time.deltaTime);
 
-                    if (target != null)
+                    if (perception.Target != null)
                     {
                         if (agent.remainingDistance < 8f)
                         {
@@ -80,38 +81,23 @@ public class EnemyController : BaseCharacter
         // if (!agent.enabled || target == null)
         //     return;
 
-        var lookSpeed = targetLockSpeed - (targetLockSpeed * target.getSpeed());
-        Vector3 lookPos = target.transform.position - transform.position;
+        var lookSpeed = targetLockSpeed - (targetLockSpeed * perception.Target.getSpeed());
+        Vector3 lookPos = perception.Target.transform.position - transform.position;
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, targetLockSpeed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTargetLost(BaseCharacter _target)
     {
-        if (!other.CompareTag("Player"))
-            return;
-
-        target = other.GetComponent<BaseCharacter>();
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (target != null && other.CompareTag(target.tag))
-        {
-            target = null;
-            agent.destination = other.transform.position;
-            // State = CharacterState.IDLE;
-            return;
-        }
+        agent.destination = _target.transform.position;
     }
 
     private void OnDrawGizmos()
     {
-        if (target == null)
+        if (perception.Target == null)
             return;
 
-        PlayerController pC = target.GetComponent<PlayerController>();
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * 25f);
     }
 
@@ -122,14 +108,13 @@ public class EnemyController : BaseCharacter
         animator.SetBool("Shooting", true);
         animator.SetInteger("WeaponID", (int)weapon.Id);
 
-        while (target != null && Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && hit.collider.CompareTag(target.tag))
+        while (perception.Target != null && Physics.Raycast(rayOrigin.position, transform.forward, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && hit.collider.CompareTag(perception.Target.tag))
         {
-            target.Hit(1f, hit.normal);
+            perception.Target.Hit(1f, hit.normal);
             weapon.Shoot();
             yield return new WaitForSeconds(weapon.FireRate);
         }
 
-        Debug.Log("Ended");
         animator.SetBool("Shooting", false);
         yield break;
     }
@@ -138,11 +123,17 @@ public class EnemyController : BaseCharacter
     {
         while (isAlive())
         {
-            if (target != null)
-                agent.destination = target.transform.position;
+            if (perception.Target != null)
+            {
+                agent.destination = perception.Target.transform.position;
+                Debug.Log(agent.destination);
+            }
+
 
             yield return new WaitForSeconds(.15f);
         }
+
+        Debug.Log((isAlive()), this);
     }
 
     public override float getSpeed()
