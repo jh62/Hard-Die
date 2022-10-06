@@ -4,54 +4,42 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public Vector3 startingRotation;
-    public Vector3 startPosition;
-    public float maxRotation = 90f;
-    private bool open = false;
-    private BaseCharacter mob;
+    [SerializeField]
+    private float maxRotation = 90f;
+
+    [SerializeField]
     private float speed = 2f;
+
+    [SerializeField]
+    private bool locked = false;
+
+    [SerializeField]
+    private bool open = false;
+
+    [SerializeField]
     private AudioSource audioSource;
+
+    private Vector3 startingRotation;
+    private Vector3 startPosition;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         startingRotation = transform.rotation.eulerAngles;
         startPosition = transform.position;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && mob != null)
-        {
-            Open(mob.transform.position);
-            Debug.Log("Open");
-        }
-    }
-
-    // private void OnCollisionEnter(Collision other)
-    // {
-    //     if (other.collider.TryGetComponent<BaseCharacter>(out mob))
-    //     {
-    //         if (!open)
-    //             Open(other.transform.position);
-    //     }
-    // }
-
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
-        if (other.TryGetComponent<BaseCharacter>(out mob))
-        {
-            if (!open)
-                Open(other.transform.position);
-        }
+        if (open || other.GetComponent<BaseCharacter>() == null)
+            return;
+
+        Open(other.transform.position);
     }
 
     public void Open(Vector3 from)
     {
         float dot = Vector3.Dot(transform.right, (from - transform.position).normalized);
         StartCoroutine("DoorRotationLogic", dot);
-
     }
 
     private IEnumerator DoorRotationLogic(float dot)
@@ -72,11 +60,11 @@ public class Door : MonoBehaviour
 
             if (dot < 0)
             {
-                endRotation = Quaternion.Euler(new Vector3(0f, startRotation.y - maxRotation, 0));
+                endRotation = Quaternion.Euler(new Vector3(0f, startRotation.y - maxRotation, 0f));
             }
             else
             {
-                endRotation = Quaternion.Euler(new Vector3(0f, startRotation.y + maxRotation, 0));
+                endRotation = Quaternion.Euler(new Vector3(0f, startRotation.y + maxRotation, 0f));
             }
         }
 

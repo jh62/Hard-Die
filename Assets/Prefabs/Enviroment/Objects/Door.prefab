@@ -480,9 +480,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f39b063dd5accf4bb763c944f1bb01c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingRotation: {x: 0, y: 0, z: 0}
-  startPosition: {x: 0, y: 0, z: 0}
   maxRotation: 120
+  speed: 2
+  locked: 0
+  open: 0
+  audioSource: {fileID: 8158888457275770365}
 --- !u!64 &389066991360281425
 MeshCollider:
   m_ObjectHideFlags: 0
