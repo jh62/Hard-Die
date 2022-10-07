@@ -37,6 +37,9 @@ public class PlayerController : BaseCharacter
 
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(groundCheck.position, 0.1f);
+
+        if (targetCheck.Hit.collider != null)
+            Gizmos.DrawLine(rayOrigin.position, targetCheck.Hit.point);
     }
 
     void Update()
@@ -188,7 +191,12 @@ public class PlayerController : BaseCharacter
             var target = targetCheck.CheckTargetHit(rayOrigin.position);
 
             if (target != null)
+            {
                 target.Hit(1f, transform.forward);
+                weapon.HitEffect.transform.position = targetCheck.Hit.point + Vector3.up * UnityEngine.Random.Range(.45f, .5f);
+                weapon.HitEffect.transform.forward = transform.forward;
+                weapon.HitEffect.Emit(1);
+            }
             else
             {
                 Collider c = targetCheck.Hit.collider;
@@ -197,6 +205,11 @@ public class PlayerController : BaseCharacter
                 {
                     c.GetComponent<BreakableWindow>().breakWindow();
                 }
+
+                weapon.HitMetalEffect.transform.position = targetCheck.Hit.point;
+                weapon.HitMetalEffect.transform.forward = targetCheck.Hit.normal;
+                weapon.HitMetalEffect.Emit(1);
+                Debug.Log("Hit something");
             }
 
             weapon.Shoot();

@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5660897829723148701}
   - component: {fileID: 3822765356173040339}
   - component: {fileID: 6378460644719676381}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Aim
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -75,8 +75,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.57, y: 10, z: 20}
-  m_Center: {x: 0, y: 0, z: 10}
+  m_Size: {x: 1.57, y: 10, z: 16}
+  m_Center: {x: 0, y: 0, z: 8}
 --- !u!114 &6378460644719676381
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,6 +20,8 @@ public class EnemyController : BaseCharacter
     [Range(1f, 20f)]
     [SerializeField] private float targetLockSpeed = 4.21f;
 
+    private float hitTime;
+
     private void Start()
     {
         StartCoroutine("UpdateNavAgentLogic");
@@ -29,6 +31,8 @@ public class EnemyController : BaseCharacter
 
     void Update()
     {
+        if (hitTime > 0f)
+            hitTime -= Time.deltaTime;
         // headTarget.position = target.position;        
 
         switch (State)
@@ -52,6 +56,9 @@ public class EnemyController : BaseCharacter
                         State = CharacterState.IDLE;
                         return;
                     }
+
+                    if (hitTime > 0f)
+                        return;
 
                     var direction = agent.desiredVelocity.normalized;
                     var speed = agent.desiredVelocity.magnitude;
@@ -80,6 +87,21 @@ public class EnemyController : BaseCharacter
         }
     }
 
+    public override void OnStateChanged()
+    {
+        base.OnStateChanged();
+
+        switch (State)
+        {
+            case CharacterState.DEAD:
+                {
+                    agent.enabled = false;
+                    StopAllCoroutines();
+                    break;
+                }
+        }
+    }
+
     private void FaceTarget()
     {
         // if (!agent.enabled || target == null)
@@ -101,10 +123,15 @@ public class EnemyController : BaseCharacter
             return;
 
         patrolPoints.Clear();
-        patrolPoints.Add(transform);
+        patrolPoints.Add(other);
         animator.SetBool("Alerted", true);
-        // agent.destination = transform.position;
         Debug.Log("Shots fired!");
+    }
+
+    public override void Hit(float dammage, Vector3 normal)
+    {
+        base.Hit(dammage, normal);
+        hitTime = 1f;
     }
 
     private void OnTargetLost(BaseCharacter _target)
@@ -119,7 +146,7 @@ public class EnemyController : BaseCharacter
         animator.SetBool("Shooting", true);
         animator.SetInteger("WeaponID", (int)weapon.Id);
 
-        while (perception.Target != null && Physics.Raycast(rayOrigin.position, transform.forward, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && hit.collider.CompareTag(perception.Target.tag))
+        while (hitTime <= 0f && perception.Target != null && Physics.Raycast(rayOrigin.position, transform.forward, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && hit.collider.CompareTag(perception.Target.tag))
         {
             perception.Target.Hit(1f, hit.normal);
             weapon.Shoot();
@@ -151,6 +178,7 @@ public class EnemyController : BaseCharacter
 
                 if (waitTime > 0f)
                 {
+                    Debug.Log("Waiting");
                     waitTime -= Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }

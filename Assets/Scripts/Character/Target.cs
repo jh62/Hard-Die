@@ -36,7 +36,7 @@ public class Target : MonoBehaviour
             if (!t.isAlive())
                 continue;
 
-            if (target == null || Vector2.Distance(transform.position, t.transform.position) < Vector2.Distance(transform.position, target.transform.position))
+            if (target == null || Vector3.Distance(transform.position, t.transform.position) < Vector3.Distance(transform.position, target.transform.position))
             {
                 if (Physics.Raycast(raycastOrigin, (t.transform.position - transform.position).normalized, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
                 {
@@ -46,8 +46,8 @@ public class Target : MonoBehaviour
             }
         }
 
-        if (targets == null)
-            Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore);
+        if (target == null)
+            Physics.Raycast(raycastOrigin, transform.forward, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore);
 
         return target;
     }

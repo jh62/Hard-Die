@@ -17,6 +17,8 @@ public class BaseWeapon : MonoBehaviour
 
     public WeaponID Id { get => id; }
     public float FireRate { get => fireRate; set => fireRate = value; }
+    public ParticleSystem HitEffect { get => hitEffect; set => hitEffect = value; }
+    public ParticleSystem HitMetalEffect { get => hitMetalEffect; set => hitMetalEffect = value; }
 
     [SerializeField] private int bullets = 0;
     [SerializeField] private int magazines = 0;
@@ -28,6 +30,13 @@ public class BaseWeapon : MonoBehaviour
 
     [SerializeField]
     private ParticleSystem muzzleFlash;
+
+    [SerializeField]
+    private ParticleSystem hitEffect;
+
+    [SerializeField]
+    private ParticleSystem hitMetalEffect;
+
 
     private void Start()
     {
@@ -75,6 +84,16 @@ public class BaseWeapon : MonoBehaviour
         if (target != null)
         {
             target.Hit(1f, hit.normal);
+            hitEffect.transform.position = hit.point;
+            hitEffect.transform.forward = hit.normal;
+            hitEffect.Emit(1);
+        }
+        else if (hit.collider != null)
+        {
+            hitMetalEffect.transform.position = hit.point;
+            hitMetalEffect.transform.forward = hit.normal;
+            hitMetalEffect.Emit(1);
+            Debug.Log("Hit!");
         }
 
         PlayFireSound();

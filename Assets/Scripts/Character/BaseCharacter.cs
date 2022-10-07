@@ -52,13 +52,6 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         health = MaxHealth;
         rigidBodies = GetComponentsInChildren<Rigidbody>();
-        // inventory.OnWeaponSwitched += OnWeaponSwitched;
-
-        // if (AnimationEvents != null)
-        // {
-        //     AnimationEvents.OnAnimationEventKey += OnAnimationEventKey;
-        //     AnimationEvents.OnAnimationEvent += OnAnimationEvent;
-        // }
     }
 
     private void Start()
@@ -86,6 +79,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
         // animator.SetFloat("normalX", normal.x);
         // animator.SetFloat("normalY", normal.z);
+        animator.SetFloat("HitAnimationIndex", UnityEngine.Random.value);
         animator.SetTrigger("Hit");
     }
 
