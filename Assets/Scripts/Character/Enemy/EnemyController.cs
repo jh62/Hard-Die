@@ -92,9 +92,12 @@ public class EnemyController : BaseCharacter
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, targetLockSpeed * Time.deltaTime);
     }
 
-    private void OnWeaponFired(Transform transform)
+    private void OnWeaponFired(Transform other)
     {
         if (perception.Target != null)
+            return;
+
+        if (Vector3.Distance(transform.position, other.position) >= 14f)
             return;
 
         patrolPoints.Clear();
@@ -107,14 +110,6 @@ public class EnemyController : BaseCharacter
     private void OnTargetLost(BaseCharacter _target)
     {
         agent.destination = _target.transform.position;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (perception.Target == null)
-            return;
-
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 25f);
     }
 
     IEnumerator ShootLogic()
@@ -144,6 +139,9 @@ public class EnemyController : BaseCharacter
         {
             if (perception.Target != null)
             {
+                if (patrolPoints.Count > 0)
+                    patrolPoints.Clear();
+
                 animator.SetBool("Alerted", true);
                 agent.destination = perception.Target.transform.position;
             }
@@ -152,7 +150,10 @@ public class EnemyController : BaseCharacter
                 // animator.SetBool("Alerted", false);
 
                 if (waitTime > 0f)
+                {
                     waitTime -= Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
 
                 if (patrolPoints.Count > 0)
                 {
@@ -164,7 +165,7 @@ public class EnemyController : BaseCharacter
                     if (Vector3.Distance(transform.position, waypoint.position) < agent.stoppingDistance)
                     {
                         patrolPointIndex++;
-                        waitTime = Random.Range(0f, 10f);
+                        waitTime = Random.Range(0f, 5f);
                     }
 
                     agent.destination = waypoint.position;
