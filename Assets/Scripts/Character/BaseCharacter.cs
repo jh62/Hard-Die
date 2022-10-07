@@ -50,6 +50,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
     private void Awake()
     {
+        health = MaxHealth;
         rigidBodies = GetComponentsInChildren<Rigidbody>();
         // inventory.OnWeaponSwitched += OnWeaponSwitched;
 
@@ -62,7 +63,6 @@ public abstract class BaseCharacter : MonoBehaviour
 
     private void Start()
     {
-        health = MaxHealth;
     }
 
     public abstract float getSpeed();

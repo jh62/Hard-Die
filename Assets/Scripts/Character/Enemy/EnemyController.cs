@@ -61,7 +61,7 @@ public class EnemyController : BaseCharacter
 
                     if (perception.Target != null)
                     {
-                        if (agent.remainingDistance < 8f)
+                        if (agent.remainingDistance < 16f)
                         {
                             agent.angularSpeed = 0f;
                             FaceTarget();

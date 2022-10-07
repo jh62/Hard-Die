@@ -28,7 +28,6 @@ public class PlayerController : BaseCharacter
     private void Start()
     {
         animator.SetBool("Alerted", true);
-        health = MaxHealth;
     }
 
     private void OnDrawGizmos()

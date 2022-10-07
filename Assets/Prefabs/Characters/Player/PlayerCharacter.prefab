@@ -75,7 +75,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 20}
+  m_Size: {x: 1.57, y: 10, z: 20}
   m_Center: {x: 0, y: 0, z: 10}
 --- !u!114 &6378460644719676381
 MonoBehaviour:
@@ -1590,6 +1590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBody: {fileID: 3065862058235901524}
   mouseSensitivity: 500
+  enabled: 1
 --- !u!114 &4288691477372701493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1602,7 +1603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0efd8a2bcd8c9884c9c996d01916c8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 20
+  MaxHealth: 7
   animator: {fileID: 7182334700644395195}
   inventory: {fileID: 5426241372244936637}
   rayOrigin: {fileID: 5660897829723148701}
