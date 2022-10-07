@@ -151,6 +151,11 @@ public class PlayerController : BaseCharacter
 
         if (!reloading && Input.GetKeyDown(KeyCode.R))
         {
+            var weapon = Inventory.GetWeapon();
+
+            if (weapon.Bullets >= weapon.MaxBullets)
+                return;
+
             if (shooting)
             {
                 shooting = false;
@@ -160,34 +165,42 @@ public class PlayerController : BaseCharacter
 
             reloading = true;
 
-            var weapon = inventory.GetWeapon();
             animator.SetInteger("WeaponID", (int)weapon.Id);
             animator.SetTrigger("Reloading");
-            weapon.reload();
             StartCoroutine("ReloadLogic");
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            inventory.next();
+            Inventory.next();
         }
     }
 
     IEnumerator ReloadLogic()
     {
-        yield return new WaitForSeconds(3f);
+        Inventory.GetWeapon().reload();
+        yield return new WaitForSeconds(3.1f);
         reloading = false;
     }
 
     IEnumerator ShootLogic()
     {
-        var weapon = inventory.GetWeapon();
+        var weapon = Inventory.GetWeapon();
+
+        if (weapon.Bullets == 0)
+            yield break;
 
         animator.SetBool("Shooting", true);
         animator.SetInteger("WeaponID", (int)weapon.Id);
 
-        while (shooting)
+        while (shooting && weapon.Bullets > 0)
         {
+            if (weapon.Bullets == 0)
+            {
+                weapon.PlayDrySound();
+                yield return new WaitForSeconds(weapon.FireRate);
+            }
+
             var target = targetCheck.CheckTargetHit(rayOrigin.position);
 
             if (target != null)
@@ -196,6 +209,7 @@ public class PlayerController : BaseCharacter
                 weapon.HitEffect.transform.position = targetCheck.Hit.point + Vector3.up * UnityEngine.Random.Range(.45f, .5f);
                 weapon.HitEffect.transform.forward = transform.forward;
                 weapon.HitEffect.Emit(1);
+                weapon.PlayFleshHitSound();
             }
             else
             {
@@ -209,7 +223,7 @@ public class PlayerController : BaseCharacter
                 weapon.HitMetalEffect.transform.position = targetCheck.Hit.point;
                 weapon.HitMetalEffect.transform.forward = targetCheck.Hit.normal;
                 weapon.HitMetalEffect.Emit(1);
-                Debug.Log("Hit something");
+                weapon.PlayWallSound();
             }
 
             weapon.Shoot();

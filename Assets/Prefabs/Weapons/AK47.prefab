@@ -236,6 +236,8 @@ MonoBehaviour:
   audioSource: {fileID: 177266463811764013}
   fireSounds:
   - {fileID: 8300000, guid: 36c4eeb6fea81174a85df9a6b82d129b, type: 3}
+  drySound: {fileID: 8300000, guid: b67dbb6d3fd874640a04165930497656, type: 3}
+  reloadSound: {fileID: 8300000, guid: 7a80e08911f5527469229307a9e8919e, type: 3}
   muzzleFlash: {fileID: 7084371738052171796}
   hitEffect: {fileID: 5036048416361243084}
   hitMetalEffect: {fileID: 4266188237697982950}

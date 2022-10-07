@@ -8,6 +8,8 @@ public class EnemyController : BaseCharacter
 {
     public Perception perception;
 
+    private static float spotDelay = 0f;
+
     [SerializeField]
     private List<Transform> patrolPoints = default;
 
@@ -17,22 +19,28 @@ public class EnemyController : BaseCharacter
     [SerializeField]
     private Transform headTarget;
 
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip[] clipVoices;
+
+    [SerializeField]
+    private AudioClip[] clipDieVoices;
+
     [Range(1f, 20f)]
     [SerializeField] private float targetLockSpeed = 4.21f;
-
-    private float hitTime;
 
     private void Start()
     {
         StartCoroutine("UpdateNavAgentLogic");
+        perception.OnTargetEnterTrigger += OnTargetAdquired;
         perception.OnTargetExitTrigger += OnTargetLost;
         BaseWeapon.OnWeaponFired += OnWeaponFired;
     }
 
     void Update()
     {
-        if (hitTime > 0f)
-            hitTime -= Time.deltaTime;
         // headTarget.position = target.position;        
 
         switch (State)
@@ -57,7 +65,7 @@ public class EnemyController : BaseCharacter
                         return;
                     }
 
-                    if (hitTime > 0f)
+                    if (isHit)
                         return;
 
                     var direction = agent.desiredVelocity.normalized;
@@ -95,7 +103,11 @@ public class EnemyController : BaseCharacter
         {
             case CharacterState.DEAD:
                 {
+                    perception.OnTargetEnterTrigger -= OnTargetAdquired;
+                    perception.OnTargetExitTrigger -= OnTargetLost;
+                    this.enabled = false;
                     agent.enabled = false;
+                    playRandomSound(clipDieVoices);
                     StopAllCoroutines();
                     break;
                 }
@@ -128,10 +140,30 @@ public class EnemyController : BaseCharacter
         Debug.Log("Shots fired!");
     }
 
+    public bool isHit = false;
+
     public override void Hit(float dammage, Vector3 normal)
     {
         base.Hit(dammage, normal);
-        hitTime = 1f;
+
+        if (!isHit)
+            StartCoroutine("HitLogic");
+    }
+
+    private void playRandomSound(AudioClip[] source)
+    {
+        audioSource.clip = source[(int)Random.Range(0, source.Length - 1)];
+        audioSource.pitch = Random.Range(.96f, 1.1f);
+        audioSource.Play();
+    }
+
+    private void OnTargetAdquired(BaseCharacter _target)
+    {
+        if (Time.time - spotDelay < 3f)
+            return;
+
+        spotDelay = Time.time;
+        playRandomSound(clipVoices);
     }
 
     private void OnTargetLost(BaseCharacter _target)
@@ -139,14 +171,23 @@ public class EnemyController : BaseCharacter
         agent.destination = _target.transform.position;
     }
 
+    IEnumerator HitLogic()
+    {
+        isHit = true;
+        agent.isStopped = true;
+        yield return new WaitForSeconds(.77f);
+        isHit = false;
+        agent.isStopped = false;
+    }
+
     IEnumerator ShootLogic()
     {
-        var weapon = inventory.GetWeapon();
+        var weapon = Inventory.GetWeapon();
 
         animator.SetBool("Shooting", true);
         animator.SetInteger("WeaponID", (int)weapon.Id);
 
-        while (hitTime <= 0f && perception.Target != null && Physics.Raycast(rayOrigin.position, transform.forward, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && hit.collider.CompareTag(perception.Target.tag))
+        while (!isHit && perception.Target != null && Physics.Raycast(rayOrigin.position, transform.forward, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && hit.collider.CompareTag(perception.Target.tag))
         {
             perception.Target.Hit(1f, hit.normal);
             weapon.Shoot();

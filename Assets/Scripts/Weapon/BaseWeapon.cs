@@ -16,17 +16,24 @@ public class BaseWeapon : MonoBehaviour
     }
 
     public WeaponID Id { get => id; }
-    public float FireRate { get => fireRate; set => fireRate = value; }
-    public ParticleSystem HitEffect { get => hitEffect; set => hitEffect = value; }
-    public ParticleSystem HitMetalEffect { get => hitMetalEffect; set => hitMetalEffect = value; }
+    public float FireRate { get => fireRate; }
+    public int Bullets { get => bullets; }
+    public int MaxBullets { get => maxBullets; }
+
+    public ParticleSystem HitEffect { get => hitEffect; }
+    public ParticleSystem HitMetalEffect { get => hitMetalEffect; }
 
     [SerializeField] private int bullets = 0;
     [SerializeField] private int magazines = 0;
     [SerializeField] private float fireRate = .5f;
     [SerializeField] private WeaponID id = WeaponID.PISTOL;
 
-    [SerializeField] private AudioSource audioSource = default;
-    [SerializeField] private AudioClip[] fireSounds = default;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] fireSounds;
+    [SerializeField] private AudioClip drySound;
+    [SerializeField] private AudioClip reloadSound;
+    [SerializeField] private AudioClip[] fleshHitSounds;
+    [SerializeField] private AudioClip[] wallHitSounds;
 
     [SerializeField]
     private ParticleSystem muzzleFlash;
@@ -37,9 +44,21 @@ public class BaseWeapon : MonoBehaviour
     [SerializeField]
     private ParticleSystem hitMetalEffect;
 
+    private AudioSource audioSourceImpact;
+
+    private int maxBullets;
+
+
+    private void Awake()
+    {
+        audioSourceImpact = gameObject.AddComponent<AudioSource>();
+        audioSourceImpact.playOnAwake = false;
+
+    }
 
     private void Start()
     {
+        maxBullets = bullets;
     }
 
     public void reload()
@@ -48,62 +67,54 @@ public class BaseWeapon : MonoBehaviour
             return;
 
         magazines--;
-        bullets = 30;
+        bullets = maxBullets;
+        PlayReloadSound();
     }
 
     public void Shoot()
     {
-        // if (bullets == 0)
-        //     return;
+        if (bullets == 0)
+        {
+            PlayDrySound();
+            return;
+        }
 
+        bullets--;
         PlayFireSound();
         muzzleFlash.Emit(1);
         OnWeaponFired?.Invoke(transform);
     }
 
-    public void Shoot(List<BaseCharacter> targets)
-    {
-        RaycastHit hit = default;
-        BaseCharacter target = null;
-
-        foreach (var t in targets)
-        {
-            if (!t.isAlive())
-                continue;
-
-            if (target == null || Vector2.Distance(transform.position, t.transform.position) < Vector2.Distance(transform.position, target.transform.position))
-            {
-                if (Physics.Raycast(transform.position, (transform.position - t.transform.position).normalized, out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
-                {
-                    if (hit.collider != null)
-                        target = t;
-                }
-            }
-        }
-
-        if (target != null)
-        {
-            target.Hit(1f, hit.normal);
-            hitEffect.transform.position = hit.point;
-            hitEffect.transform.forward = hit.normal;
-            hitEffect.Emit(1);
-        }
-        else if (hit.collider != null)
-        {
-            hitMetalEffect.transform.position = hit.point;
-            hitMetalEffect.transform.forward = hit.normal;
-            hitMetalEffect.Emit(1);
-            Debug.Log("Hit!");
-        }
-
-        PlayFireSound();
-        muzzleFlash.Emit(1);
-    }
-
-    private void PlayFireSound()
+    public void PlayFireSound()
     {
         audioSource.clip = fireSounds[Random.Range(0, fireSounds.Length - 1)];
         audioSource.pitch = Random.Range(1f, 1.07f);
         audioSource.Play();
+    }
+
+    public void PlayDrySound()
+    {
+        audioSource.clip = drySound;
+        audioSource.Play();
+    }
+
+    public void PlayReloadSound()
+    {
+        audioSource.clip = reloadSound;
+        audioSource.Play();
+    }
+
+    public void PlayFleshHitSound()
+    {
+        audioSourceImpact.clip = fleshHitSounds[Random.Range(0, fleshHitSounds.Length - 1)];
+        audioSourceImpact.pitch = Random.Range(1f, 1.07f);
+        audioSourceImpact.Play();
+    }
+
+    public void PlayWallSound()
+    {
+        audioSourceImpact.clip = wallHitSounds[Random.Range(0, wallHitSounds.Length - 1)];
+        audioSourceImpact.pitch = Random.Range(1f, 1.07f);
+        audioSourceImpact.Play();
     }
 }

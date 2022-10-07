@@ -26,6 +26,10 @@ public abstract class BaseCharacter : MonoBehaviour
             }
         }
     }
+
+    public int Health { get => health; }
+    public WeaponInventory Inventory { get => inventory; set => inventory = value; }
+
     // public IAnimationEvent AnimationEvents;
 
     [Range(1, 20)]
@@ -35,7 +39,7 @@ public abstract class BaseCharacter : MonoBehaviour
     protected Animator animator;
 
     [SerializeField]
-    protected WeaponInventory inventory;
+    private WeaponInventory inventory;
 
     [SerializeField]
     protected Transform rayOrigin;
@@ -43,7 +47,7 @@ public abstract class BaseCharacter : MonoBehaviour
     // [SerializeField]
     // protected Transform raycastOrigin;
 
-    protected int health;
+    private int health;
 
     private CharacterState state = CharacterState.IDLE;
     private Rigidbody[] rigidBodies;
