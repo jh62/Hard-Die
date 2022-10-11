@@ -32,7 +32,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
     // public IAnimationEvent AnimationEvents;
 
-    [Range(1, 20)]
+    [Range(1, 200)]
     public int MaxHealth = 10;
 
     [SerializeField]
@@ -77,12 +77,10 @@ public abstract class BaseCharacter : MonoBehaviour
         if (health <= 0)
         {
             State = CharacterState.DEAD;
-            GetComponent<Health>().ActivateRagdolls(true, normal);
+            GetComponent<RagdollActivator>().ActivateRagdolls(true, normal);
             return;
         }
 
-        // animator.SetFloat("normalX", normal.x);
-        // animator.SetFloat("normalY", normal.z);
         animator.SetFloat("HitAnimationIndex", UnityEngine.Random.value);
         animator.SetTrigger("Hit");
     }

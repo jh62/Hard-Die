@@ -58,7 +58,7 @@ public class Door : MonoBehaviour
             audioSource.Play();
             open = true;
 
-            if (dot < 0)
+            if (dot >= 0)
             {
                 endRotation = Quaternion.Euler(new Vector3(0f, startRotation.y - maxRotation, 0f));
             }

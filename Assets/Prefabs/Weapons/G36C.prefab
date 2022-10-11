@@ -155,6 +155,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9d8584f46bdec7a42b95eb7114ad9dcc, type: 3}
   drySound: {fileID: 8300000, guid: b67dbb6d3fd874640a04165930497656, type: 3}
   reloadSound: {fileID: 8300000, guid: 7a80e08911f5527469229307a9e8919e, type: 3}
+  fleshHitSounds:
+  - {fileID: 8300000, guid: 88cd5a296237109459ba6fd0efb68174, type: 3}
+  - {fileID: 8300000, guid: 1828632b40161364b8cce5d81794ede9, type: 3}
+  - {fileID: 8300000, guid: 6632f7ecc8e152346bf89e607a3b778b, type: 3}
+  wallHitSounds:
+  - {fileID: 8300000, guid: 9abb5dfe7e728f349b867ffe9726bab7, type: 3}
+  - {fileID: 8300000, guid: 6443c4ed512784e47adef4cbff1d7d05, type: 3}
+  - {fileID: 8300000, guid: 706ae5b3bf1b8df4db6c76ca25610890, type: 3}
+  - {fileID: 8300000, guid: b1efb4f8f1e978144ba09f873baf1ef9, type: 3}
   muzzleFlash: {fileID: 4804615792844881709}
   hitEffect: {fileID: 5064286765137789254}
   hitMetalEffect: {fileID: 9150307342552025262}

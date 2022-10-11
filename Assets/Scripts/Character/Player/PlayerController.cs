@@ -68,11 +68,15 @@ public class PlayerController : BaseCharacter
         {
             case CharacterState.IDLE:
                 {
-                    if (speed != 0f)
+                    if (speed > 0f)
                     {
                         State = CharacterState.MOVE;
                         break;
                     }
+
+                    animator.SetFloat("x", 0);
+                    animator.SetFloat("y", 0);
+
                     break;
                 }
             case CharacterState.MOVE:
@@ -82,8 +86,8 @@ public class PlayerController : BaseCharacter
                         State = CharacterState.IDLE;
                         break;
                     }
-                    animator.SetFloat("x", speed * direction.x, .1f, Time.deltaTime);
-                    animator.SetFloat("y", speed * direction.z, .1f, Time.deltaTime);
+                    animator.SetFloat("x", speed * direction.x, .075f, Time.deltaTime);
+                    animator.SetFloat("y", speed * direction.z, .075f, Time.deltaTime);
                     break;
                 }
         }
@@ -108,8 +112,11 @@ public class PlayerController : BaseCharacter
 
     private void PlayerInput()
     {
-        if (reloading)
+        if (reloading || !controller.enabled)
+        {
+            speed = 0f;
             return;
+        }
 
         float _x = Input.GetAxis("Horizontal");
         float _z = Input.GetAxis("Vertical");
@@ -129,7 +136,7 @@ public class PlayerController : BaseCharacter
         }
 
 
-        if (speed > 0f && speed <= Mathf.Epsilon)
+        if (speed <= Mathf.Epsilon)
         {
             speed = 0f;
         }
@@ -137,7 +144,6 @@ public class PlayerController : BaseCharacter
         if (speed >= .2f)
         {
             direction.Set(_x, direction.y, _z);
-            // direction = new Vector3(_x, direction.y, _z);
             var desiredVelocity = transform.right * direction.x + transform.forward * direction.z;
             controller.Move(desiredVelocity * speed * acceleration * Time.deltaTime);
         }
@@ -170,10 +176,26 @@ public class PlayerController : BaseCharacter
             StartCoroutine("ReloadLogic");
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L) && !reloading && !shooting)
         {
             Inventory.next();
+            animator.SetInteger("WeaponID", Inventory.WeaponID);
+            animator.SetFloat("x", 0f);
+            animator.SetFloat("y", 0f);
         }
+    }
+
+    public override void Hit(float dammage, Vector3 normal)
+    {
+        base.Hit(dammage, normal);
+        StartCoroutine("HitLogic");
+    }
+
+    IEnumerator HitLogic()
+    {
+        controller.enabled = false;
+        yield return new WaitForSeconds(.27f);
+        controller.enabled = true;
     }
 
     IEnumerator ReloadLogic()

@@ -21,6 +21,10 @@ public class Perception : MonoBehaviour
             return;
 
         target = other.GetComponent<BaseCharacter>();
+
+        if (!target.isAlive())
+            return;
+
         OnTargetEnterTrigger?.Invoke(target);
     }
 
@@ -29,7 +33,9 @@ public class Perception : MonoBehaviour
         if (target == null || !other.CompareTag(target.tag))
             return;
 
-        OnTargetExitTrigger?.Invoke(target);
+        if (target.isAlive())
+            OnTargetExitTrigger?.Invoke(target);
+
         target = null;
     }
 }

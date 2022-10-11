@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2881818571037235407
 Transform:
   m_ObjectHideFlags: 0
@@ -741,19 +741,7 @@ MonoBehaviour:
   MaxHealth: 3
   animator: {fileID: 6146667515283553549}
   inventory: {fileID: 9055752682983543307}
-  audioSourceHit: {fileID: 2168345939307172487}
   rayOrigin: {fileID: 5369733025688540299}
-  hitSounds:
-  - {fileID: 8300000, guid: 88cd5a296237109459ba6fd0efb68174, type: 3}
-  - {fileID: 8300000, guid: 1828632b40161364b8cce5d81794ede9, type: 3}
-  - {fileID: 8300000, guid: 6632f7ecc8e152346bf89e607a3b778b, type: 3}
-  - {fileID: 8300000, guid: c94b8d77a28023a4bbd979690d6d3c8f, type: 3}
-  - {fileID: 8300000, guid: fabbe459392e6c245ba262575c8c8880, type: 3}
-  - {fileID: 8300000, guid: 76cef9658635bf049bb67668320c5a7b, type: 3}
-  - {fileID: 8300000, guid: a65172d5e71874a4597971690bc2b3e4, type: 3}
-  - {fileID: 8300000, guid: 4e36d40ce7ca887448ab9a4f18be44cf, type: 3}
-  - {fileID: 8300000, guid: f7bcdd68a77c633489e342afcd3d597c, type: 3}
-  - {fileID: 8300000, guid: 4bacfcfd332f74b4face4daf11ce8fb3, type: 3}
   perception: {fileID: 5201705658436479576}
   patrolPoints: []
   agent: {fileID: 621886798}

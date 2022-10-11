@@ -105,10 +105,11 @@ public class EnemyController : BaseCharacter
                 {
                     perception.OnTargetEnterTrigger -= OnTargetAdquired;
                     perception.OnTargetExitTrigger -= OnTargetLost;
-                    this.enabled = false;
+
+                    StopAllCoroutines();
+
                     agent.enabled = false;
                     playRandomSound(clipDieVoices);
-                    StopAllCoroutines();
                     break;
                 }
         }
@@ -208,9 +209,11 @@ public class EnemyController : BaseCharacter
             if (perception.Target != null)
             {
                 if (patrolPoints.Count > 0)
+                {
                     patrolPoints.Clear();
+                    animator.SetBool("Alerted", true);
+                }
 
-                animator.SetBool("Alerted", true);
                 agent.destination = perception.Target.transform.position;
             }
             else
@@ -219,9 +222,8 @@ public class EnemyController : BaseCharacter
 
                 if (waitTime > 0f)
                 {
-                    Debug.Log("Waiting");
                     waitTime -= Time.deltaTime;
-                    yield return new WaitForEndOfFrame();
+                    yield return null;
                 }
 
                 if (patrolPoints.Count > 0)

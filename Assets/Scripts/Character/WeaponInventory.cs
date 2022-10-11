@@ -13,7 +13,10 @@ public class WeaponInventory : MonoBehaviour
         MP5
     }
 
+    public int WeaponID { get => activeIndex; }
+
     private int activeIndex = 0;
+
 
     public void switchTo(int weaponIndex)
     {
