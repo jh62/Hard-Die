@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseLook : MonoBehaviour
@@ -14,7 +12,6 @@ public class MouseLook : MonoBehaviour
 
     private Camera mainCamera;
 
-    private float rotationX = 0f;
     private float rotationY = 0f;
 
     void Start()

@@ -117,9 +117,6 @@ public class EnemyController : BaseCharacter
 
     private void FaceTarget()
     {
-        // if (!agent.enabled || target == null)
-        //     return;
-
         var lookSpeed = targetLockSpeed - (targetLockSpeed * perception.Target.getSpeed());
         Vector3 lookPos = perception.Target.transform.position - transform.position;
         lookPos.y = 0;
@@ -147,7 +144,7 @@ public class EnemyController : BaseCharacter
     {
         base.Hit(dammage, normal);
 
-        if (!isHit)
+        if (isAlive() && !isHit)
             StartCoroutine("HitLogic");
     }
 
@@ -233,11 +230,12 @@ public class EnemyController : BaseCharacter
 
                     Transform waypoint = patrolPoints[patrolPointIndex];
 
-                    if (Vector3.Distance(transform.position, waypoint.position) < agent.stoppingDistance)
+                    if (Vector3.Distance(transform.position, waypoint.position) <= agent.stoppingDistance)
                     {
                         patrolPointIndex++;
                         waitTime = Random.Range(0f, 5f);
                     }
+
 
                     agent.destination = waypoint.position;
                 }

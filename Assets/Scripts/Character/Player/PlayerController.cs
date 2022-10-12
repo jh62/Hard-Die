@@ -44,25 +44,21 @@ public class PlayerController : BaseCharacter
 
     void Update()
     {
-        if (!isAlive())
+        if (!isAlive() || !controller.enabled)
             return;
 
         PlayerInput();
 
-        // Physics.CheckCapsule(groundCheck.position,)
-        bool isGrounded = Physics.CheckSphere(groundCheck.position, 0.07f, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
+        bool isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
+
+        // bool isGrounded = Physics.Raycast(groundCheck.position, -transform.up, .5f, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore);
 
         if (!isGrounded)
-        {
-            direction.y -= 9f * Time.deltaTime;
-        }
+            direction.y -= 18f * Time.deltaTime;
         else
-        {
-            if (direction.y < 0f)
-                direction.y = -2f;
-        }
+            direction.y = -2f * Time.deltaTime;
 
-        controller.Move(transform.up * direction.y);
+        controller.Move(transform.up * direction.y * Time.deltaTime);
 
         switch (State)
         {

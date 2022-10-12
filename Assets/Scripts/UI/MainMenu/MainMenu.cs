@@ -9,6 +9,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private AudioClip menuValidate;
     [SerializeField] private AudioClip menuSelect;
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
     public void OnButtonOver(AudioClip clip)
     {
         audioSource.clip = clip;

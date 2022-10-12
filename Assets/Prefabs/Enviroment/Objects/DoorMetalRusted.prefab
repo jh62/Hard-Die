@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3284378137227081526}
   - component: {fileID: 3284378137227081527}
   - component: {fileID: 3284378137227081524}
-  - component: {fileID: 3284378137227081525}
   m_Layer: 0
   m_Name: DoorMetalRusted
   m_TagString: Untagged
@@ -161,23 +160,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3284378137227081525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3284378137227081523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f39b063dd5accf4bb763c944f1bb01c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxRotation: 90
-  speed: 2
-  locked: 0
-  open: 0
-  audioSource: {fileID: 3284378137227081524}
 --- !u!1001 &3638142720774620859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -188,6 +170,10 @@ PrefabInstance:
     - target: {fileID: 2178067121569601912, guid: 9a131ea4b5a50284489aa4880d4b6987, type: 3}
       propertyPath: m_Name
       value: DoorRustyModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2910824697822942381, guid: 9a131ea4b5a50284489aa4880d4b6987, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6172925493320274065, guid: 9a131ea4b5a50284489aa4880d4b6987, type: 3}
       propertyPath: m_RootOrder
@@ -247,6 +233,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a131ea4b5a50284489aa4880d4b6987, type: 3}
+--- !u!1 &3190601353242927043 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2178067121569601912, guid: 9a131ea4b5a50284489aa4880d4b6987, type: 3}
+  m_PrefabInstance: {fileID: 3638142720774620859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &953447426809849591
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3190601353242927043}
+  m_Mesh: {fileID: 0}
 --- !u!4 &7482700547389068842 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6172925493320274065, guid: 9a131ea4b5a50284489aa4880d4b6987, type: 3}
